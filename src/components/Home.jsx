@@ -1,16 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import Login_img from "./Animations/Login_img";
-import { Link } from "react-router-dom";
+import { setBtnShow } from "../STORE/SLICES/LogOut_Slice";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const history = useNavigate();
+  const dispatch = useDispatch();
   const [inpVal, setInpVal] = useState({
     name: "",
     email: "",
     date: "",
     password: "",
   });
-  const [data, setData] = useState([]);
+  useEffect(() => {
+    let login_Check = localStorage.hasOwnProperty("user_login");
+    if (login_Check) {
+      let log_details = localStorage.getItem("user_login");
+      log_details = JSON.parse(log_details);
+      if (log_details.length !== 0) {
+        dispatch(setBtnShow(true));
+        history("/details");
+      }
+    }
+  }, []);
   const getData = (e) => {
     const { value, name } = e.target;
 
@@ -61,7 +75,7 @@ const Home = () => {
           <section className="left_data mt-3 " style={{ width: "100%" }}>
             <Form className="d-flex flex-column justify-content-center align-items-center mt-5">
               <h3 className="text-center col-lg-6">Sign Up</h3>
-              <Form.Group className="mb-3 col-lg-6" controlId="formBasicEmail">
+              <Form.Group className="mb-3 col-lg-6">
                 <Form.Control
                   type="text"
                   name="name"
@@ -70,7 +84,7 @@ const Home = () => {
                   placeholder="Enter Your Name"
                 />
               </Form.Group>
-              <Form.Group className="mb-3 col-lg-6" controlId="formBasicEmail">
+              <Form.Group className="mb-3 col-lg-6">
                 <Form.Control
                   type="email"
                   name="email"
@@ -79,7 +93,7 @@ const Home = () => {
                   placeholder="Enter your email"
                 />
               </Form.Group>
-              <Form.Group className="mb-3 col-lg-6" controlId="formBasicEmail">
+              <Form.Group className="mb-3 col-lg-6">
                 <Form.Control
                   type="Date"
                   value={inpVal.date}

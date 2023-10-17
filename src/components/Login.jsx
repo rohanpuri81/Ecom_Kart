@@ -1,12 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sign_img from "./Animations/Sign_img";
 import { Form, Button } from "react-bootstrap";
+import { json, useNavigate } from "react-router-dom";
+import { setBtnShow } from "../STORE/SLICES/LogOut_Slice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
+  const history = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    let login_Check = localStorage.hasOwnProperty("user_login");
+    if (login_Check) {
+      let log_details = localStorage.getItem("user_login");
+      log_details = JSON.parse(log_details);
+      if (log_details.length !== 0) {
+        history("/details");
+      }
+    }
+  }, []);
+
   const [inpVal, setInpVal] = useState({
-    name: "",
     email: "",
-    date: "",
     password: "",
   });
   const getData = (e) => {
@@ -21,16 +36,36 @@ const Login = () => {
   };
   const addData = (e) => {
     e.preventDefault();
-    const { name, email, password, date } = inpVal;
+    const { email, password } = inpVal;
 
-    if (name === "" || email === "" || date === "") {
+    const getUserArr = localStorage.getItem("useryoutube");
+
+    if (email === "") {
       alert("Please fill all the details");
     } else if (!email.includes("@") || !email.includes(".")) {
       alert("Please Enter Valid Email");
     } else if (password.length < 6) {
       alert("Password length Should be greater than 6");
     } else {
-      console.log("jj");
+      if (getUserArr && getUserArr.length) {
+        const userData = JSON.parse(getUserArr);
+        const userLogin = userData.filter((ele, ind) => {
+          return ele.email === inpVal.email && ele.password === inpVal.password;
+        });
+        if (userLogin.length === 0) {
+          alert("Invalid User Details..");
+        } else {
+          console.log("userLoggedInSuccessfully");
+          localStorage.setItem("user_login", JSON.stringify(userLogin));
+          dispatch(setBtnShow(true));
+          history("/details");
+        }
+      }
+
+      setInpVal({
+        email: "",
+        password: "",
+      });
     }
   };
   return (
