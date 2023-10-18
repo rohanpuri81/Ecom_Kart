@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import Login_img from "./Animations/Login_img";
-import { setBtnShow } from "../STORE/SLICES/LogOut_Slice";
+import { setBtnShow } from "../redux/LogOut_Slice";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 

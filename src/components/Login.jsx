@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sign_img from "./Animations/Sign_img";
 import { Form, Button } from "react-bootstrap";
 import { json, useNavigate } from "react-router-dom";
-import { setBtnShow } from "../STORE/SLICES/LogOut_Slice";
+import { setBtnShow } from "../redux/LogOut_Slice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
