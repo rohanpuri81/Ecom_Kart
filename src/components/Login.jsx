@@ -49,9 +49,16 @@ const Login = () => {
     } else {
       if (getUserArr && getUserArr.length) {
         const userData = JSON.parse(getUserArr);
-        const userLogin = userData.filter((ele, ind) => {
-          return ele.email === inpVal.email && ele.password === inpVal.password;
-        });
+        let userLogin;
+        if (Array.isArray(userData)) {
+          userLogin = userData.filter((ele, ind) => {
+            return (
+              ele.email === inpVal.email && ele.password === inpVal.password
+            );
+          });
+        } else {
+          userLogin = userData;
+        }
         if (userLogin.length === 0) {
           alert("Invalid User Details..");
         } else {
